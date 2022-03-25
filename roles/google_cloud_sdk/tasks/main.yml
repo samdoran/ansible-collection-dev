@@ -1,0 +1,47 @@
+- name: Create install directory
+  file:
+    path: "{{ gcsdk_install_path }}"
+    state: directory
+    owner: "{{ ansible_user | default(lookup('env', 'USER')) }}"
+    mode: '0755'
+  become: yes
+  tags:
+    - dev
+    - gcsdk
+
+- name: Download Google Cloud SDK
+  unarchive:
+    remote_src: yes
+    src: https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
+    dest: "{{ gcsdk_install_path }}"
+    owner: "{{ ansible_user | default(lookup('env', 'USER')) }}"
+    creates: "{{ gcsdk_install_path }}/google_cloud_sdk"
+  tags:
+    - dev
+    - gcsdk
+
+- name: Install Google Cloud SDK
+  shell: >
+    {{ gcsdk_install_path }}/google-cloud-sdk/install.sh
+    --usage-reporting false
+    --bash-completion false
+    --path-update false
+    --rc-path false
+    --quiet
+    --install-python false
+  tags:
+    - dev
+    - gcsdk
+
+- name: Link binaries into PATH
+  file:
+    src: "{{ gcsdk_install_path }}/google-cloud-sdk/bin/{{ item.src | default(item) }}"
+    dest: "{{ gcsdk_bin_dir }}/{{ item.dest | default(item) }}"
+    state: link
+    force: yes
+  loop: "{{ gcsdk_link }}"
+  become: yes
+  tags:
+    - dev
+    - gcsdk
+    - gcsdk_link

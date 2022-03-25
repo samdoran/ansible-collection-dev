@@ -1,0 +1,10 @@
+gcsdk_install_path: /usr/local/opt
+gcsdk_bin_dir: /usr/local/bin
+gcsdk_link:
+  - anthoscli
+  - bq
+  - docker-credential-gcloud
+  - gcloud
+  - src: git-credential-gcloud.sh
+    dest: get-credential-gcloud
+  - gsutil
