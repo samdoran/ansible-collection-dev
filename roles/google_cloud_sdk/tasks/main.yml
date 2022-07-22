@@ -29,6 +29,8 @@
     --rc-path false
     --quiet
     --install-python false
+  args:
+    creates: "{{ gcsdk_install_path }}/google-cloud-sdk/bin"
   tags:
     - dev
     - gcsdk
