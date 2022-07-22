@@ -8,3 +8,7 @@ gcsdk_link:
   - src: git-credential-gcloud.sh
     dest: get-credential-gcloud
   - gsutil
+  - gke-gcloud-auth-plugin
+
+gcsdk_components:
+  - gke-gcloud-auth-plugin

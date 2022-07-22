@@ -35,6 +35,16 @@
     - dev
     - gcsdk
 
+- name: Install components
+  command: "{{ gcsdk_install_path }}/google-cloud-sdk/bin/gcloud components install {{ item }}"
+  args:
+    creates: "{{ gcsdk_install_path }}/google-cloud-sdk/bin/{{ item }}"
+  loop: "{{ gcsdk_components }}"
+  tags:
+    - dev
+    - gcsdk
+    - gcsdk_link
+
 - name: Link binaries into PATH
   file:
     src: "{{ gcsdk_install_path }}/google-cloud-sdk/bin/{{ item.src | default(item) }}"
