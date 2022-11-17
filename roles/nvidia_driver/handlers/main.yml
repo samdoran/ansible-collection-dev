@@ -1,0 +1,5 @@
+- name: rebuild initramfs
+  command: dracut --force
+
+- name: make grub2 config
+  command: grub2-mkconfig -o {{ grub2_cfg.files[0]["path"] }}

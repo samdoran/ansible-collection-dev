@@ -39,3 +39,32 @@
     chdir: "{{ nvidia_driver_download_dir }}"
   tags:
     - nvidia
+
+- name: Find grub2 cfg
+  find:
+    paths: /boot/
+    recurse: yes
+    file_type: file
+    patterns: grub.cfg
+  register: grub2_cfg
+  tags:
+    - nvidia
+    - nvidia_modprobe
+
+- name: Disable nouveau driver
+  lineinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    create: yes
+    line: "{{ item.line | default(item) }}"
+    state: "{{ item.state | default(omit) }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - blacklist nouveau
+  notify:
+    - rebuild initramfs
+    - make grub2 config
+  tags:
+    - nvidia
+    - nvidia_modprobe
