@@ -27,6 +27,9 @@
     {{ nvidia_driver_extra_args | default("") }}
   args:
     chdir: "{{ nvidia_driver_download_dir }}"
+  notify:
+    - rebuild initramfs
+    - make grub2 config
   tags:
     - nvidia
 
