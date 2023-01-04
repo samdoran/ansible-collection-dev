@@ -27,6 +27,7 @@
     {{ nvidia_driver_extra_args | default("") }}
   args:
     chdir: "{{ nvidia_driver_download_dir }}"
+    creates: /usr/local/bin/nvidia
   notify:
     - rebuild initramfs
     - make grub2 config
@@ -40,6 +41,7 @@
     --sanity
   args:
     chdir: "{{ nvidia_driver_download_dir }}"
+    creates: /usr/local/bin/nvidia
   tags:
     - nvidia
 
